@@ -4,6 +4,7 @@ com\gov\app\prueba\clteach\dto\ExamenDTO.class
 com\gov\app\prueba\clteach\dto\PacienteDTO$PacienteDTOBuilder.class
 com\gov\app\prueba\clteach\utils\constants\Constants.class
 com\gov\app\prueba\clteach\dto\ExamenDTO$ExamenDTOBuilder.class
+com\gov\app\prueba\clteach\dto\PacienteRequestDTO.class
 com\gov\app\prueba\clteach\services\impl\LeerArchivoService.class
 com\gov\app\prueba\clteach\vistas\SubidaArchivosWindow$2.class
 com\gov\app\prueba\clteach\vistas\SubidaArchivosWindow$1.class

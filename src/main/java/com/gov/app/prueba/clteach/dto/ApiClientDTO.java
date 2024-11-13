@@ -1,6 +1,13 @@
 package com.gov.app.prueba.clteach.dto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import static com.gov.app.prueba.clteach.utils.constants.Constants.CONTENT_TYPE;
+import static com.gov.app.prueba.clteach.utils.constants.Constants.CONTENT_TYPE_TWO;
+import static com.gov.app.prueba.clteach.utils.constants.Constants.ERROR_POST;
+import static com.gov.app.prueba.clteach.utils.constants.Constants.HTTP_POST;
+import static com.gov.app.prueba.clteach.utils.constants.Constants.REQUEST_NAME;
+import static com.gov.app.prueba.clteach.utils.constants.Constants.REQUEST_NAME_TWO;
+import static com.gov.app.prueba.clteach.utils.constants.Constants.TYPE_CONTENT;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -11,6 +18,10 @@ import lombok.Data;
 
 /**
  * Singleton para realizar solicitudes HTTP (GET y POST) y mapear respuestas JSON a objetos Java.
+ * <p>
+ * Esta clase utiliza {@link HttpURLConnection} para realizar solicitudes HTTP y {@link ObjectMapper}
+ * para convertir respuestas JSON en objetos de tipo {@link RespuestaGeneralDTO}.
+ * </p>
  */
 @Data
 @AllArgsConstructor
@@ -22,15 +33,23 @@ public class ApiClientDTO {
     // ObjectMapper para convertir JSON a objetos Java
     private final ObjectMapper objectMapper;
 
-    // Constructor privado para evitar la creación directa
+    /**
+     * Constructor privado para evitar la creación directa de instancias.
+     * <p>
+     * Inicializa el {@link ObjectMapper} necesario para el procesamiento de JSON.
+     * </p>
+     */
     private ApiClientDTO() {
         this.objectMapper = new ObjectMapper();
     }
 
     /**
-     * Método para obtener la instancia única del Singleton.
+     * Obtiene la instancia única del Singleton {@code ApiClientDTO}.
+     * <p>
+     * Implementa un patrón de Singleton doblemente bloqueado para garantizar que solo exista una instancia.
+     * </p>
      *
-     * @return la instancia única de ApiClientDTO
+     * @return la instancia única de {@code ApiClientDTO}
      */
     public static ApiClientDTO getInstance() {
         if (instance == null) {
@@ -44,53 +63,28 @@ public class ApiClientDTO {
     }
 
     /**
-     * Realiza una solicitud GET al endpoint especificado y convierte la respuesta a un objeto RespuestaGeneralDTO.
+     * Realiza una solicitud HTTP POST al endpoint especificado con un cuerpo JSON y convierte la
+     * respuesta en un objeto de tipo {@link RespuestaGeneralDTO}.
+     * <p>
+     * La solicitud incluye los encabezados necesarios para indicar el formato de entrada y salida como JSON.
+     * </p>
      *
-     * @param endpoint URL del endpoint
-     * @return RespuestaGeneralDTO convertido de la respuesta JSON
-     * @throws Exception en caso de error de conexión o procesamiento
-     */
-    public RespuestaGeneralDTO sendGetRequest(String endpoint) throws Exception {
-        URL url = new URL(endpoint);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-
-        int responseCode = connection.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
-
-            // Convertir JSON a RespuestaGeneralDTO usando Jackson
-            return objectMapper.readValue(response.toString(), RespuestaGeneralDTO.class);
-        } else {
-            throw new RuntimeException("Error en la solicitud GET: Código HTTP " + responseCode);
-        }
-    }
-
-    /**
-     * Realiza una solicitud POST al endpoint especificado con un cuerpo JSON y convierte la respuesta a un objeto RespuestaGeneralDTO.
-     *
-     * @param endpoint URL del endpoint
-     * @param jsonInput Cuerpo JSON de la solicitud
-     * @return RespuestaGeneralDTO convertido de la respuesta JSON
-     * @throws Exception en caso de error de conexión o procesamiento
+     * @param endpoint la URL del endpoint al que se realizará la solicitud POST.
+     * @param jsonInput el cuerpo de la solicitud en formato JSON.
+     * @return un objeto {@link RespuestaGeneralDTO} convertido de la respuesta JSON.
+     * @throws Exception si ocurre un error de conexión o procesamiento de la respuesta.
      */
     public RespuestaGeneralDTO sendPostRequest(String endpoint, String jsonInput) throws Exception {
         URL url = new URL(endpoint);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/json; utf-8");
-        connection.setRequestProperty("Accept", "application/json");
+        connection.setRequestMethod(HTTP_POST);
+        connection.setRequestProperty(REQUEST_NAME, CONTENT_TYPE);
+        connection.setRequestProperty(REQUEST_NAME_TWO, CONTENT_TYPE_TWO);
         connection.setDoOutput(true);
 
         // Enviar el JSON en el cuerpo de la solicitud
         try (OutputStream os = connection.getOutputStream()) {
-            byte[] input = jsonInput.getBytes("utf-8");
+            byte[] input = jsonInput.getBytes(TYPE_CONTENT);
             os.write(input, 0, input.length);
         }
 
@@ -107,7 +101,7 @@ public class ApiClientDTO {
             // Convertir JSON a RespuestaGeneralDTO usando Jackson
             return objectMapper.readValue(response.toString(), RespuestaGeneralDTO.class);
         } else {
-            throw new RuntimeException("Error en la solicitud POST: Código HTTP " + responseCode);
+            throw new RuntimeException(ERROR_POST + responseCode);
         }
     }
 }
