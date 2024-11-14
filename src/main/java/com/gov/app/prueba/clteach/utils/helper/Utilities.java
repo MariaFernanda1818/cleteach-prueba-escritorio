@@ -28,7 +28,7 @@ public class Utilities {
      * @return el texto sin el patrón al final; si no coincide, retorna el texto original.
      */
     public static String quitarPalabraFinal(String texto, String patronQuitar) {
-        return texto.endsWith(patronQuitar) ? texto.substring(0, texto.length() - patronQuitar.length()) : texto;
+        return texto.endsWith(patronQuitar) ? texto.substring(0, texto.length() - patronQuitar.length()).stripTrailing() : texto;
     }
 
     /**

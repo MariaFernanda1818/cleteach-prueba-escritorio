@@ -7,6 +7,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -17,6 +18,7 @@ import javax.swing.JOptionPane;
  * Utiliza {@link ILeerArchivoService} para procesar los archivos seleccionados.
  * </p>
  */
+@Slf4j
 public class SubidaArchivosWindow extends javax.swing.JFrame {
  /**
      * Servicio para leer y procesar archivos HL7.
@@ -123,6 +125,7 @@ public class SubidaArchivosWindow extends javax.swing.JFrame {
         if (confirm == JOptionPane.YES_OPTION) {
             try {
                 RespuestaGeneralDTO respuesta = iLeerArchivoService.leerArchivoHl7(archivo);
+                log.info(respuesta.getMessage());
                 JOptionPane.showMessageDialog(this,
                     respuesta.getMessage(),
                     (Utilities.validacionRespuesta(respuesta.getStatus()) ? "Error" : "Éxito"),

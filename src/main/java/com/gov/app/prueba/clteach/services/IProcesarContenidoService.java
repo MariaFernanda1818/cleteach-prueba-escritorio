@@ -1,3 +1,7 @@
+package com.gov.app.prueba.clteach.services;
+
+import com.gov.app.prueba.clteach.dto.PacienteRequestDTO;
+
 /**
  * Interfaz para el servicio encargado de procesar el contenido de un archivo HL7.
  * <p>
@@ -5,10 +9,6 @@
  * en un objeto {@link PacienteRequestDTO}.
  * </p>
  */
-package com.gov.app.prueba.clteach.services;
-
-import com.gov.app.prueba.clteach.dto.PacienteRequestDTO;
-
 public interface IProcesarContenidoService {
 
     /**

@@ -1,3 +1,8 @@
+package com.gov.app.prueba.clteach.services;
+
+import com.gov.app.prueba.clteach.dto.RespuestaGeneralDTO;
+import java.io.File;
+
 /**
  * Interfaz para el servicio encargado de procesar archivos HL7.
  * <p>
@@ -5,11 +10,6 @@
  * devolviendo una respuesta estructurada en un objeto {@link RespuestaGeneralDTO}.
  * </p>
  */
-package com.gov.app.prueba.clteach.services;
-
-import com.gov.app.prueba.clteach.dto.RespuestaGeneralDTO;
-import java.io.File;
-
 public interface ILeerArchivoService {
 
     /**
