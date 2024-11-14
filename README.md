@@ -2,6 +2,8 @@
 
 Este repositorio es parte de una prueba técnica que consta de una aplicación de escritorio, una API y un front desarrollado con Angular. A continuación, se detallan los pasos necesarios para correr correctamente cada uno de estos proyectos.
 
+---
+
 ## Requisitos Previos
 
 Para ejecutar este proyecto, necesitarás:
@@ -13,6 +15,8 @@ Para ejecutar este proyecto, necesitarás:
 - **Visual Studio Code**: Para ejecutar el front-end.
 - **MySQL**: Se provee la conexión mediante Docker Compose.
 
+---
+
 ## Configuración Inicial
 
 1. **Configurar MySQL con Docker Compose**  
@@ -23,7 +27,29 @@ Para ejecutar este proyecto, necesitarás:
    docker-compose up -d
    ```
 
-   Esto iniciará la base de datos necesaria para el proyecto, cabe aclarar que este docker-compose esta en cltech-api.
+   Esto iniciará la base de datos necesaria para el proyecto. Cabe aclarar que este archivo `docker-compose` se encuentra en el repositorio **cltech-api**.
+
+---
+
+## Solución para el Cargue de Archivos `.txt`
+
+Para resolver el problema del cargue de archivos `.txt`, se implementó una solución mediante una **aplicación de escritorio** con las siguientes características:
+
+- **Funcionalidad Principal**:  
+  La aplicación de escritorio incluye dos botones:
+    1. Un botón para seleccionar un archivo `.txt` con formato **HL7**.
+    2. Un botón para enviar dicho archivo al backend.
+
+- **Proceso**:
+    - Al seleccionar el archivo, la aplicación realiza una lectura del mismo con las validaciones necesarias.
+    - Posteriormente, se envía el archivo procesado al backend mediante una solicitud HTTP.
+    - En el backend, se gestiona el almacenamiento de los datos en la base de datos.
+
+- **Consulta de Registros**:  
+  El backend expone un endpoint dedicado para consultar todos los registros almacenados en la base de datos. Este endpoint es consumido por el front-end.
+
+- **Importante**:  
+  La subida de archivos se realiza de manera **individual**, es decir, uno por uno, como lo establece el enunciado.
 
 ---
 
@@ -37,11 +63,11 @@ Para ejecutar este proyecto, necesitarás:
 - Abre el proyecto en **IntelliJ IDEA**.
 
 - Asegúrate de que en el archivo `application.properties` de la API esté configurada la opción para generar las tablas automáticamente con Hibernate. Esta es la línea clave que debes verificar:
-  ```
+  ```properties
   spring.jpa.hibernate.ddl-auto=none
   ```
 
-- Ejecuta el proyecto. Deja la API corriendo, ya que es fundamental para que los demás repositorios funcionen correctamente.
+- Ejecuta el proyecto. Deja la API corriendo, ya que es fundamental para que los demás proyectos funcionen correctamente.
 
 ---
 
